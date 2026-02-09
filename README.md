@@ -1,5 +1,11 @@
 # South Side Shopping - E-commerce Platform
 
+<img width="500" height="500" alt="Screenshot 2026-02-09 231804" src="https://github.com/user-attachments/assets/695f08d9-c152-4454-acbf-15c9db89517f" />
+<img width="500" height="500" alt="Screenshot 2026-02-09 231901" src="https://github.com/user-attachments/assets/d0c44325-e738-49d8-ba3f-c1e8b66164e8" />
+<img width="500" height="500" alt="Screenshot 2026-02-09 231815" src="https://github.com/user-attachments/assets/551e6df8-11b5-4ebb-9e15-2ccfaacdaa75" />
+<img width="500" height="500" alt="Screenshot 2026-02-09 232352" src="https://github.com/user-attachments/assets/ac3c8977-ad44-47d9-ae73-68bef89301a5" />
+
+
 **Tagline:** *If it's not South Side, it's not the best!*
 
 A complete Django-based e-commerce platform with Stripe payment integration, built for local development.
