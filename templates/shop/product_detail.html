@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - South Side Shopping{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop:category_products' product.category.slug %}">{{
+                    product.category.name }}</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-detail-img">
+            {% else %}
+            <img src="https://via.placeholder.com/500x500?text={{ product.name }}" alt="{{ product.name }}"
+                class="product-detail-img">
+            {% endif %}
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ product.name }}</h1>
+
+            <div class="mb-3">
+                {% if product.in_stock %}
+                <span class="stock-badge in-stock"><i class="bi bi-check-circle"></i> In Stock</span>
+                {% else %}
+                <span class="stock-badge out-of-stock"><i class="bi bi-x-circle"></i> Out of Stock</span>
+                {% endif %}
+            </div>
+
+            <h2 class="product-price mb-4">₹{{ product.price }}</h2>
+
+            <div class="mb-4">
+                <h5>Description</h5>
+                <p>{{ product.description }}</p>
+            </div>
+
+            <div class="mb-4">
+                <p><strong>Category:</strong> <a href="{% url 'shop:category_products' product.category.slug %}">{{
+                        product.category.name }}</a></p>
+                <p><strong>Stock Available:</strong> {{ product.stock_quantity }} units</p>
+            </div>
+
+            {% if product.in_stock %}
+            <form method="POST" action="{% url 'shop:add_to_cart' product.id %}" class="mb-3">
+                {% csrf_token %}
+                <div class="row g-3 align-items-center mb-3">
+                    <div class="col-auto">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1"
+                            max="{{ product.stock_quantity }}" style="width: 100px;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary btn-lg" disabled>
+                <i class="bi bi-x-circle"></i> Out of Stock
+            </button>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'shop:category_products' product.category.slug %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Back to {{ product.category.name }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="mt-5">
+        <h3 class="mb-4">Related Products</h3>
+        <div class="row">
+            {% for related in related_products %}
+            <div class="col-md-3 col-sm-6">
+                <div class="card product-card">
+                    <a href="{% url 'shop:product_detail' related.slug %}">
+                        {% if related.image %}
+                        <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.name }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x250?text={{ related.name }}" class="card-img-top"
+                            alt="{{ related.name }}">
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'shop:product_detail' related.slug %}"
+                                class="text-decoration-none text-dark">
+                                {{ related.name|truncatewords:5 }}
+                            </a>
+                        </h5>
+                        <p class="product-price">₹{{ related.price }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
